@@ -51,29 +51,37 @@ async function generateLogic(c) {
 
   const prompt = `${prompts[mode]}\n\n User said/asked: ${content}`
 
-  //openai api call (had to visit openAi several times)
-  const thinkyResponse = await axios.post('https://api.openai.com/v1/chat/completions', {
-    model: 'gpt-3.5-turbo',
-    messages: [
-        {role: 'system', content: prompts[mode]},
-        {role: 'user', content}
-    ]
-  }, {
-    headers: {
-        Authorization: `Bearer ${c.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
-    }
-  })
+  //gemini api call (had to visit openAi several times)
+  try{
+    const thinkyResponse = await axios.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${c.env.GEMINI_API_KEY}', {
+        contents: [
+            {
+                role: "user",
+                parts: [{text: `${prompt[mode]}\n User Said: ${content}`}]
+            }
+        ]
+    })
+  
 
-  //final reply to show user and update DB
-  const thinkyReply = thinkyResponse.data.choices?.[0]?.message?.content || '...'
 
-  await prisma.thought.create({
-    data:{
-        content: content,
-        response: thinkyReply,
-        mode: mode,
-        userId: userId
+        //final reply to show user and update DB
+        const thinkyReply = thinkyResponse.data.choices?.[0]?.message?.content || '...'
+
+        await prisma.thought.create({
+            data:{
+                content: content,
+                response: thinkyReply,
+                mode: mode,
+                userId: userId
+            }
+        })
+
+        return c.json({
+            response: thinkyReply
+        })
+    } catch(err){
+        return c.json({
+            error: "Thinky API server error. Try again later."
+        }, 500)
     }
-  })
 }
