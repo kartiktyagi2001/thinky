@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  // output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -8,28 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String
+  password  String
+  createdAt DateTime  @default(now())
+  thoughts  Thought[] @relation("UserThoughts")
+}
 
-model User{
-  id String @id @default(uuid())
-  email String @unique
-  name String
-  password String
-  thoughts Thought[] @relation("UserThoughts")
+model Thought {
+  id        String   @id @default(uuid())
+  content   String
+  response  String
+  mode      String
+  userId    String
   createdAt DateTime @default(now())
+  user      User     @relation("UserThoughts", fields: [userId], references: [id])
 }
 
-model Thought{
-  id String @id @default(uuid())
-  content String
-  response String
-  mode  Mode
-  user   User   @relation("UserThoughts", fields: [userId], references: [id])
-  userId String
-  createdAt DateTime @default(now())
-}
-
-enum Mode {
-  PHILOSOPHER
-  DEVLOPER
-  FRIEND
-}
+// enum Mode {
+//   PHILOSOPHER
+//   DEVLOPER
+//   FRIEND
+// }

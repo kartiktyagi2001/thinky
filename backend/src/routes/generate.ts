@@ -4,84 +4,99 @@ import z from "zod";
 import axios from "axios";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
+// import { Mode } from "@prisma/client/edge";
+
 
 
 export const generateRouter = new Hono<{
-    Bindings: {
-        OPENAI_API_KEY: string,
-        JWT_SECRET: string,
-        DATABASE_URL: string
-    },
-    Variables: {
-        userId: string
-    }
+  Bindings: {
+    GEMINI_API_KEY: string;
+    JWT_SECRET: string;
+    DATABASE_URL: string;
+  };
+  Variables: {
+    userId: string;
+  };
 }>();
 
-generateRouter.post('/generate', auth, generateLogic);
+//temp fix
+// type ModeType = "PHILOSOPHER" | "DEVLOPER" | "FRIEND";
+
+
+
+generateRouter.post("/generate", auth, generateLogic);
 
 async function generateLogic(c) {
-    const body = await c.req.json();
+  const body = await c.req.json();
 
-    //prisma init
-    const prisma = new PrismaClient({
+  // Initialize Prisma
+  const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
+  }).$extends(withAccelerate());
 
+  // Zod validation
+  const schema = z.object({
+    content: z.string(),
+    mode: z.string(),
+  });
+  const result = schema.safeParse(body);
 
-    const schema = z.object({
-        content : z.string(),
-        mode: z.enum(['PHILOSOPHER', 'DEVLOPER', 'FRIEND'])
-    })
-    const result = schema.safeParse(body);
-
-    if(!result.success){
-        c.status(400)
-        return c.json({message: "Invalid Inputs"})
-    }
-
-    const {content, mode} = result.data; //access mode and content if schema is valid
-    const userId = c.get('userId');
-
-    //preset the modes, these prompts gets added in front of every message acc to selected mode
-    const prompts = {
-    PHILOSOPHER: 'Respond as a Stoic philosopher. Be deep, wise, calm',
-    DEVLOPER: 'Respond as a senior software developer. Be clear and helpful.',
-    FRIEND: 'Respond as a caring, casual friend. Be kind and funny and humourous.'
+  if (!result.success) {
+    c.status(400);
+    return c.json({ message: "Invalid Inputs" });
   }
 
-  const prompt = `${prompts[mode]}\n\n User said/asked: ${content}`
+  const { content, mode } = result.data;
+  const userId = c.get("userId");
 
-  //gemini api call (had to visit openAi several times)
-  try{
-    const thinkyResponse = await axios.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${c.env.GEMINI_API_KEY}', {
-        contents: [
+  // Preset prompts
+  const prompts = {
+    PHILOSOPHER: "Respond as a Stoic philosopher. Be deep, wise, calm",
+    DEVLOPER: "Respond as a senior software developer. Be clear and helpful.",
+    FRIEND: "Respond as a caring, casual friend. Be kind and funny and humorous.",
+  };
+
+  const prompt = `${prompts[mode]}\n\nUser said/asked: ${content}`;
+
+  try {
+    // Gemini API call
+    const thinkyResponse = await axios.post(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${c.env.GEMINI_API_KEY}`,
+        {
+            // keep the same body structure
+            contents: [
             {
                 role: "user",
-                parts: [{text: `${prompt[mode]}\n User Said: ${content}`}]
-            }
-        ]
-    })
-  
+                parts: [{ text: prompt }],
+            },
+            ],
+        }
+    );
 
 
-        //final reply to show user and update DB
-        const thinkyReply = thinkyResponse.data.choices?.[0]?.message?.content || '...'
+    const thinkyReply =
+      thinkyResponse.data?.candidates?.[0]?.content?.parts?.[0]?.text || "...";
 
-        await prisma.thought.create({
-            data:{
-                content: content,
-                response: thinkyReply,
-                mode: mode,
-                userId: userId
-            }
-        })
+    // await prisma.thought.create({
+    //   data: {
+    //     content,
+    //     response: thinkyReply,
+    //     mode,
+    //     userId,
+    //   },
+    // });
 
-        return c.json({
-            response: thinkyReply
-        })
-    } catch(err){
-        return c.json({
-            error: "Thinky API server error. Try again later."
-        }, 500)
-    }
+    return c.json({
+      response: thinkyReply,
+    });
+
+  } catch (err) {
+    return c.json(
+      {
+        error: err,
+        message: "Thinky API server error. Try again later."
+      },
+      500
+    );
+  }
 }
