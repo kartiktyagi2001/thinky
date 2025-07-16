@@ -1,10 +1,10 @@
 import { Auth } from "../components/auth"
 
-export const Signup = ()=>{
+export const Signin = ()=>{
     return(
         <div>
             <div>
-                <Auth type="signup" />
+                <Auth type="signin" />
             </div>
         </div>
     )

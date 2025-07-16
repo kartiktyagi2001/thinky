@@ -9,7 +9,7 @@ export const Auth = ({type}: {type: "signup"|"signin"})=>{
     const BACKEND_URL = import.meta.env.BASE_URL
 
     //test log
-    alert(BACKEND_URL)
+    // alert(BACKEND_URL)
     
     const [credentials, setCredentials] = useState({
         name: "",
@@ -52,7 +52,7 @@ export const Auth = ({type}: {type: "signup"|"signin"})=>{
                             {type==="signup" ? 'Create an account.' : 'Welcome back.'}
                         </div>
                         <div className="text-slate-400 ">
-                            {type=== "signup" ? "Already have an account?" : "Don't have an account?"} <Link to={type === "signup" ? '/signin' : '/signup'} className='underline'>{type === "signup" ? 'Signin' : 'Join, its free!'}</Link>
+                            {type=== "signup" ? "Already have an account?" : "Don't have an account?"} <Link to={type === "signup" ? '/signin' : '/signup'} className='underline'>{type === "signup" ? 'Hop in.' : 'Join, its free!'}</Link>
                         </div>
                     </div>
 
