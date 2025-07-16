@@ -1,15 +1,15 @@
 import { useState, type ChangeEvent } from 'react';
 import {Link, useNavigate} from 'react-router-dom'
 import axios from 'axios'
+import { BASE_URL } from "../be_config"
 
 export const Auth = ({type}: {type: "signup"|"signin"})=>{
 
     const navigate = useNavigate();
 
-    const BACKEND_URL = import.meta.env.BASE_URL
 
     //test log
-    // alert(BACKEND_URL)
+    // alert(BASE_URL)
     
     const [credentials, setCredentials] = useState({
         name: "",
@@ -19,7 +19,7 @@ export const Auth = ({type}: {type: "signup"|"signin"})=>{
 
     async function sendRequest() {
         try{
-            const response = await axios.post(`${BACKEND_URL}/thinky/${type==="signup" ? 'signup' : 'signin'}`, credentials);
+            const response = await axios.post(`${BASE_URL}/thinky/${type==="signup" ? 'signup' : 'signin'}`, credentials);
 
             //since BE returns a json err, we check it here or else it will be treated as sucess and err never catched in case of signin
             if (response.data.error) {

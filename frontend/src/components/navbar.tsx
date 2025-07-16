@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import thinky from '../assets/thinky3.png'
 
 
 export const Navbar = ()=>{
@@ -12,15 +13,17 @@ export const Navbar = ()=>{
   }, []);
 
     return (
-    <div className="border-b shadow-lg flex justify-between items-center px-10 py-4">
-      <Link to={'/blogs'} className="flex items-center justify-center text-2xl text-slate-950 font-mono">
-          Podium
+    <div className="border-b shadow-2xl flex justify-between items-center bg-zinc-800 px-10 py-4">
+      <Link to={'/generate'} className="flex items-center justify-center w-20 h-20">
+          <img src={thinky} alt="" />
       </Link>
 
       <div>
-        <Link to={'/publish'}>
-          <button type="button" className="mr-8 cursor-pointer text-white bg-purple-700 hover:bg-slate-200 hover:text-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2">
-              Write
+        <Link to={'/signin'}>
+          <button className="relative rounded-lg inline-block font-medium mr-5 group py-1.5 px-2.5 ">
+            <span className="absolute rounded-lg inset-0 w-full h-full transition duration-400 ease-out transform translate-x-1 translate-y-1 bg-zinc-950 group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
+            <span className="absolute rounded-lg inset-0 w-full h-full bg-zinc-700 border border-zinc-950 group-hover:bg-zinc-900"></span>
+            <span className="relative rounded-lg text-purple-500 ">Switch User</span>
           </button>
         </Link>  
         <ProfilePhoto name={username} />
@@ -32,8 +35,8 @@ export const Navbar = ()=>{
 function ProfilePhoto({name}: {name: string}){
     
     return(
-        <div className={`relative inline-flex items-center justify-center h-8 w-8 overflow-hidden bg-gray-200 rounded-full`}>
-            <span className={`text-md text-orange-500`}>{name[0]}</span>
+        <div className={`relative inline-flex items-center justify-center h-10 w-10 overflow-hidden bg-zinc-900 rounded-full`}>
+            <span className={`text-lg text-purple-500`}>{name[0]}</span>
         </div>
     )
 
