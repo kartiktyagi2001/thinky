@@ -1,16 +1,15 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import axios from 'axios'
 import { BASE_URL } from "../be_config"
 import { Button } from "../components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu"
-import { DropdownMenuCheckboxItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, type DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
+import {DropdownMenuRadioGroup, DropdownMenuRadioItem} from "@radix-ui/react-dropdown-menu"
 
 
 
