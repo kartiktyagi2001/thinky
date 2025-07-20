@@ -75,7 +75,7 @@ export const Generate = ()=>{
                 </div>
             )}
 
-            <div className="mt-6 max-w-2xl w-full fixed bottom-10">
+            <div className="mt-6 max-w-2xl w-full fixed bottom-2 px-2">
                 <textarea
                     className="text-zinc-400 w-full max-w-2xl mt-10 p-3 rounded-lg bg-zinc-900 placeholder-zinc-600 shadow-2xl resize-none mb-4 focus:outline-none"
                     rows={4}
@@ -89,9 +89,9 @@ export const Generate = ()=>{
                         <ModeDropdown mode={mode} setMode={setMode} />
                     </div>
 
-                    <button className="relative shadow-2xl bg-zinc-700  group  py-1.4 px-2.5 text-zinc-50 hover:bg-zinc-800 hover:text-zinc-300 " onClick={sendReq} disabled={loading}>
+                    <button className="relative shadow-2xl bg-zinc-700  group  py-1.4 px-5 text-zinc-50 hover:bg-zinc-800 hover:text-zinc-300 " onClick={sendReq} disabled={loading}>
 
-                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-zinc-300 group-hover:w-full group-hover:transition-all"></span>{loading ? "Thinking..." : "Generate"}
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-zinc-300 group-hover:w-full group-hover:transition-all"></span>{loading ? "Thinking..." : "Ask"}
                     </button>
 
                 </div>
