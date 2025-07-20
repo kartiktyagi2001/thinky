@@ -1,16 +1,6 @@
 import { useState } from "react"
 import axios from 'axios'
 import { BASE_URL } from "../be_config"
-import { Button } from "../components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu"
-import {DropdownMenuRadioGroup, DropdownMenuRadioItem} from "@radix-ui/react-dropdown-menu"
-
 
 
 export const Generate = ()=>{
@@ -108,31 +98,24 @@ function ModeDropdown({
     mode,
     setMode,
 }: {
-    mode: string
-    setMode: (value: string) => void
+    mode: string;
+    setMode: (value: string) => void;
 }) {
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="bg-zinc-800 border-gray-300 text-zinc-100 hover:bg-gray-100">
-                    Mode: {mode}
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 bg-zinc-300 border border-gray-200 rounded shadow-lg">
-                <DropdownMenuLabel className="text-gray-700 font-semibold px-2 py-1">Select Mode to chat</DropdownMenuLabel>
-                <DropdownMenuSeparator className="my-2 border-t border-gray-200" />
-                <DropdownMenuRadioGroup value={mode} onValueChange={setMode}>
-                    <DropdownMenuRadioItem value="FRIEND" className="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-                        Friend
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="DEVLOPER" className="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-                        Developer
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="PHILOSOPHER" className="px-2 py-2 hover:bg-gray-100 cursor-pointer rounded">
-                        Philosopher
-                    </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-        </DropdownMenu>
-    )
+        <div className="flex items-center space-x-2">
+            <label htmlFor="mode" className="text-sm text-zinc-100">
+                Mode:
+            </label>
+            <select
+                id="mode"
+                value={mode}
+                onChange={(e) => setMode(e.target.value)}
+                className="bg-zinc-800 border border-gray-300 text-zinc-100 px-3 py-2 rounded shadow-sm focus:outline-none"
+            >
+                <option value="FRIEND">Friend</option>
+                <option value="DEVLOPER">Developer</option>
+                <option value="PHILOSOPHER">Philosopher</option>
+            </select>
+        </div>
+    );
 }
