@@ -13,7 +13,7 @@ export const Navbar = ()=>{
   }, []);
 
     return (
-    <div className="border-b shadow-2xl flex justify-between items-center bg-zinc-800 px-10 py-4">
+    <div className="border-b border-b-zinc-950 shadow-2xl flex justify-between items-center bg-zinc-800 px-2">
       <Link to={'/generate'} className="flex items-center justify-center w-20 h-20">
           <img src={thinky} alt="" />
       </Link>

@@ -44,15 +44,15 @@ export const Auth = ({type}: {type: "signup"|"signin"})=>{
 
 
     return(
-        <div className="h-screen flex justify-center flex-col">
-            <div className="flex justify-center">
+        <div className="h-screen bg-zinc-950 flex justify-center flex-col">
+            <div className="flex  justify-center">
                 <div>
                     <div className='p-4'>
-                        <div className="text-4xl font-bold">
+                        <div className="text-4xl text-zinc-300 font-bold">
                             {type==="signup" ? 'Create an account.' : 'Welcome back.'}
                         </div>
-                        <div className="text-slate-400 ">
-                            {type=== "signup" ? "Already have an account?" : "Don't have an account?"} <Link to={type === "signup" ? '/signin' : '/signup'} className='underline'>{type === "signup" ? 'Hop in.' : 'Join, its free!'}</Link>
+                        <div className="text-zinc-600 ">
+                            {type=== "signup" ? "Already have an account?" : "Don't have an account?"} <Link to={type === "signup" ? '/signin' : '/signup'} className='underline hover:text-purple-500'>{type === "signup" ? 'Hop in.' : 'Join, its free!'}</Link>
                         </div>
                     </div>
 
@@ -77,7 +77,7 @@ export const Auth = ({type}: {type: "signup"|"signin"})=>{
                             })
                         }} />
 
-                        <button onClick={sendRequest} type="button" className=" w-full mt-6 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">{type === "signup" ? "Signup" : "Signin"}</button>
+                        <button onClick={sendRequest} type="button" className=" w-full mt-6 text-white bg-black border-b border-purple-400 hover:bg-purple-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-purple-400 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">{type === "signup" ? "Signup" : "Signin"}</button>
                     </div>
                 </div>
             </div>
@@ -99,15 +99,14 @@ function LabelledInput({ label, placeholder, type, onChange }: LabelledInputType
   return (
     //got this from flowbite website
     <div>
-      <label className="block mb-1 text-sm font-medium text-gray-900 dark:text-black">
+      <label className="block mb-1 text-sm font-medium text-zinc-50 dark:text-black">
         {label}
       </label>
       <input
         onChange={onChange}
         type={type ||"text"}
         id="first_name"
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                   focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-3"
+        className="bg-zinc-800 border border-zinc-700 text-zinc-400 text-sm rounded-lg focus:outline-none block w-full p-2.5 mb-3"
         placeholder={placeholder}
         required
       />
