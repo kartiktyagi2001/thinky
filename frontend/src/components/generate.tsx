@@ -1,6 +1,14 @@
 import { useState } from "react"
 import axios from 'axios'
 import { BASE_URL } from "../be_config"
+import ReactMarkdown from "react-markdown"
+
+// const markdownText = `**Important Considerations & Troubleshooting**
+
+// * **Check for an accompanying file:** There's often a small "index" file...
+// * **Corrupted files:** ...
+// * **Wrong extension (Unlikely):** ...
+// But **sdvdwv** isn't getting bold in my react fe`;
 
 
 export const Generate = ()=>{
@@ -71,7 +79,11 @@ export const Generate = ()=>{
             {response && (
                 <div className="mt-10 text-zinc-300 max-w-2xl w-full bg-zinc-800 p-4 rounded shadow-2xl max-h-80 overflow-y-auto">
                     <h2 className="font-semibold mb-2">Thinky Says:</h2>
-                    <p className="whitespace-pre-line">{response}</p>
+                    <p className="whitespace-pre-line">
+                        <ReactMarkdown >
+                            {response}
+                        </ReactMarkdown>
+                    </p>
                 </div>
             )}
 
